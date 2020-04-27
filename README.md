@@ -1,9 +1,10 @@
-# README #
+# README
 
-# ConfiguraÁıes do novo repositorio git #
-Baixar e instalar o git bash vers„o 2.14.1 para windows, o programa vai permitir configurar o ambiente
-link: https://git-scm.com/downloads 
-ApÛs fazer a instalaÁ„o: navegar atÈ a pasta do projeto pelo promp e executar os comando abaixo, tenha certeza que est· dentro do diretÛrio.
+# Configura√ß√µes do novo repositorio git
+
+Baixar e instalar o git bash vers√£o 2.14.1 para windows, o programa vai permitir configurar o ambiente
+link: https://git-scm.com/downloads
+Ap√≥s fazer a instala√ß√£o: navegar at√© a pasta do projeto pelo promp e executar os comando abaixo, tenha certeza que est√£o dentro do diret√≥rio.
 
 git init
 git remote add origin '{local onde se encontra o projeto}'
@@ -13,13 +14,13 @@ git push -u origin master
 git config core.autocrlf true
 git pull
 
+# Comandos Git Bash
 
-# Comandos Git Bash #
+# Exemplo - mensagem
 
-# Exemplo  -  mensagem #
-git pull 	=> Pegar os arquivos e atualizaÁıes do repositÛrio remoto;
-git add  	=> Adiciona os arquivos alterados no repositÛrio local para ser enviados ao repositÛrio remoto;
-git commit -m "mensagem" => Comita os arquivos que foram adicionados;  
-git push 	=> Envia as alteraÁıes do repositÛrio local para o repositÛrio remoto.
+git pull => Pegar os arquivos e atualiza√ß√µes do reposit√≥rio remoto;
+git add => Adiciona os arquivos alterados no reposit√≥rio local para ser enviados ao reposit√≥rio remoto;
+git commit -m "mensagem" => Comita os arquivos que foram adicionados;
+git push => Envia as altera√ß√µes do reposit√≥rio local para o reposit√≥rio remoto.
 
-OBS: Sempre que for executado em um commit È necess·rio executar o git push.     
+OBS: Os commits devem ser no branch 'develop' e sempre que for executado em um commit √© necess√°rio executar o git push.

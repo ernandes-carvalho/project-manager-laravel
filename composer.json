@@ -1,18 +1,28 @@
 {
     "name": "ernandes/son-framework",
+    "description": "framework",
     "authors": [
         {
             "name": "Ernandes Carvalho",
-            "email": "ernandesdecarvalho@gmail.com"
+            "email": "ernandesdecarvalho@gmail.com",
+            "homepage": "http://www.ernandescarvalho.com",
+            "role": "Developer"
         }
     ],
     "require": {},
     "autoload": {
         "psr-4": {
-            "SON\\Framework\\": "src"
+            "SON\\Framework\\": "src",
+            "App\\": "app"
         }
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.5"
+    },
+    "scripts": {
+        "server": "php -S localhost:8080 -t public"
+    },
+    "config": {
+        "process-timeout": 0
     }
 }
