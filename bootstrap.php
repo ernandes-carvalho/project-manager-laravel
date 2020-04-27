@@ -4,12 +4,20 @@ require __DIR__.'/vendor/autoload.php';
 
 $router = new SON\Framework\Router;
 
-$router->add('GET', '/', function () {
-    return 'home page';
-});
+require __DIR__.'/config/containers.php';
+require __DIR__.'/config/events.php';
+require __DIR__.'/config/routes.php';
 
-$router->add('GET', '/projects/(\d+)', function ($params) {
-    return "listando projetos {$params[1]}";
-});
+try {
+    $result = $router->run();
 
-echo $router->run();
+    $response = new \SON\Framework\Response;
+    $params = [
+        'container' => $container,
+        'params' => $result['params']
+    ];
+    $response($result['action'], $params);
+
+} catch(\SON\Framework\Exceptions\HttpException $e) {
+    echo $e->getMessage();
+}

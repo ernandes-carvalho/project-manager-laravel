@@ -9,7 +9,11 @@
             "role": "Developer"
         }
     ],
-    "require": {},
+    "require": {
+        "pimple/pimple": "^3.3",
+        "symfony/http-foundation": "^5.0",
+        "zendframework/zend-eventmanager": "^3.2"
+    },
     "autoload": {
         "psr-4": {
             "SON\\Framework\\": "src",

@@ -2,6 +2,8 @@
 
 namespace SON\Framework;
 
+use SON\Framework\Exceptions\HttpException;
+
 class Router
 {
     private $routes = [];
@@ -26,14 +28,15 @@ class Router
         $url = $this->getCurrentUrl();
         $method = strtolower($_SERVER['REQUEST_METHOD']);
         if (empty($this->routes[$method])) {
-            return 'Página não encontrada!';
+            throw new HttpException('Page not found', 404);
         }
 
         foreach ($this->routes[$method] as $route => $action) {
             if (\preg_match($route, $url, $params)) {
-                return $action($params);
+                return compact('action', 'params');
             }
         }
-        return 'Página não encontrada!';
+
+        throw new HttpException('Page not found', 404);
     }
 }
