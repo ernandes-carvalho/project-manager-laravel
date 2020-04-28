@@ -16,8 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "SON\\Framework\\": "src",
-            "App\\": "app"
+            "SON\\Framework\\": "src"
         }
     },
     "require-dev": {
