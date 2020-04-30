@@ -10,7 +10,7 @@ $app->addMiddleware(
 $app->addMiddleware(
     'before',
     function () {
-        header('Content-Type: text/plain');
+        header('Content-Type: apllication/json');
     }
 );
 
