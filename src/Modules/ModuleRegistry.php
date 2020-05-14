@@ -10,17 +10,17 @@ class ModuleRegistry
     private $composer;
     private $modules = [];
 
-    public function setApp (App $app) 
+    public function setApp(App $app)
     {
         $this->app = $app;
     }
 
-    public function setComposer ($composer)
+    public function setComposer($composer)
     {
         $this->composer = $composer;
     }
-    
-    public function add (Contract $module)
+
+    public function add(Contract $module)
     {
         $this->modules[] = $module;
     }
@@ -32,7 +32,7 @@ class ModuleRegistry
         }
     }
 
-    private function registry ($module) 
+    private function registry($module)
     {
         $app = $this->app;
         $router = $app->getRouter();
@@ -43,11 +43,10 @@ class ModuleRegistry
         foreach ($namespaces as $prefix => $path) {
             $this->composer->setPsr4($prefix, $path);
         }
-        
+
         require $module->getContainerConfig();
         require $module->getEventConfig();
         require $module->getMiddlewareConfig();
-        require $module->getRouterConfig();
+        require $module->getRouteConfig();
     }
-
 }

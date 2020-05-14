@@ -2,41 +2,62 @@
 
 namespace App\Controllers;
 
-use App\Models\Users;
+use SON\Framework\Exceptions\HttpException;
+use Firebase\JWT\JWT;
 
 class UsersController
 {
-    public function index($container, $request)
+    public function register($c, $request)
     {
-        $user = new Users($container);
-        return $user->all();
-    }
-    
-    public function show($container, $request)
-    {
-        $user = new Users($container);
-        $id = $request->attributes->get(1);
-        return $user->get(['id' => $id]);
+        return $c['users_model']->create($request->request->all());
     }
 
-    public function create($container, $request)
+    public function getToken($c, $request)
     {
-        $user = new Users($container);
-        return $user->create($request->request->all());
+        $email = $request->request->get('email');
+        $password = $request->request->get('password');
+
+        $user = $c['users_model']->getByEmail($email);
+        if (!$user) {
+            throw new HttpException("Forbidden", 401);
+        }
+
+        if (!password_verify($password, $user['password'])) {
+            throw new HttpException("Forbidden", 401);
+        }
+
+        unset($user['password']);
+
+        $key = 'SECRET KEY';
+        $data = [
+            'iat' => time(),
+            'exp' => time() + (60 * 60 * 24 * 360),
+            'user' => $user
+        ];
+
+        $token = JWT::encode($data, $key);
+        return ['token' => $token];
     }
 
-    public function update($container, $request)
+    public function getCurrentUser($c)
     {
-        $user = new Users($container);
-        $id = $request->attributes->get(1);
-        return $user->update(['id' => $id], $request->request->all());
-    }
+        $token = getallheaders()['Authorization'] ?? null;
 
-    public function delete($container, $request)
-    {
-        $user = new Users($container);
-        $id = $request->attributes->get(1);
-        return $user->delete(['id' => $id]);
-    }
+        if (!$token) {
+            $token = filter_input(\INPUT_GET, 'token');
+        }
 
+        if (!$token) {
+            throw new HttpException("Forbidden", 401);
+        }
+
+        try {
+            $key = 'SECRET KEY';
+            $data = JWT::decode($token, $key, ['HS256']);
+        } catch(\Exception $e) {
+            throw new HttpException("Forbidden", 401);
+        }
+
+        return (array)$data;
+    }
 }

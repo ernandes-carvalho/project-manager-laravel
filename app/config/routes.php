@@ -1,44 +1,14 @@
 <?php
 
-use App\Models\Users;
+$router->add('GET', '/', function () {
+    return file_get_contents(__DIR__ . '/../../template/index.html');
+});
 
-$router->add(
-    'GET', 
-    '/', 
-    function () use ($container) {
-        /*$user = new Users($container);
-        $data = $user->get(1);
-        var_dump($data);*/
-        return 'home page';
-    }
-);
+$router->add('POST', '/auth/register', '\App\Controllers\UsersController::register');
+$router->add('POST', '/auth/token', '\App\Controllers\UsersController::getToken');
+$router->add('GET', '/api/me', function ($c) {
+    header('Content-Type: application/json');
+    $data = (new \App\Controllers\UsersController)->getCurrentUser($c);
 
-$router->add(
-    'GET', 
-    '/users', 
-    '\App\Controllers\UsersController::index'
-);
-
-$router->add(
-    'GET', 
-    '/users/(\d+)', 
-    '\App\Controllers\UsersController::show'
-);
-
-$router->add(
-    'POST', 
-    '/users', 
-    '\App\Controllers\UsersController::create'
-);
-
-$router->add(
-    'PUT', 
-    '/users/(\d+)', 
-    '\App\Controllers\UsersController::update'
-);
-
-$router->add(
-    'DELETE', 
-    '/users/(\d+)', 
-    '\App\Controllers\UsersController::delete'
-);
+    return $data;
+});

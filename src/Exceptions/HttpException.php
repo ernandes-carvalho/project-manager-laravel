@@ -2,7 +2,7 @@
 
 namespace SON\Framework\Exceptions;
 
-class HttpException Extends \Exception
+class HttpException extends \Exception
 {
     public function __construct($message, $code, \Exception $previous = null)
     {

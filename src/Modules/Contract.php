@@ -8,5 +8,5 @@ interface Contract
     public function getContainerConfig() :string;
     public function getEventConfig() :string;
     public function getMiddlewareConfig() :string;
-    public function getRouterConfig() :string;
+    public function getRouteConfig() :string;
 }

@@ -8,27 +8,29 @@ use SON\Framework\Response;
 use SON\Framework\Exceptions\HttpException;
 use SON\Framework\Modules\ModuleRegistry;
 
-class APP
+class App
 {
     private $composer;
     private $container;
     private $middlewares = [
         'before' => [],
-        'after' => []
+        'after' => [],
     ];
 
     public function __construct($composer, array $modules, Container $container = null)
     {
         $this->container = $container;
         $this->composer = $composer;
-        if ($this->container === null) {
-            $this->container = new Container();
+
+        if ($this->container === null)
+        {
+            $this->container = new Container;
         }
 
         $this->loadRegistry($modules);
     }
 
-    public function addMiddleware($on, $callback)
+    public function middleware($on, $callback)
     {
         $this->middlewares[$on][] = $callback;
     }
@@ -48,8 +50,8 @@ class APP
 
         return $this->container['router'];
     }
-    
-    public function getResponder()
+
+    public function getRosponder()
     {
         if (!$this->container->offsetExists('responder')) {
             $this->container['responder'] = function () {
@@ -62,43 +64,44 @@ class APP
 
     public function getHttpErrorHandler()
     {
-        if (!$this->container->offsetExists('HttpErrorHandler')) {
-            $this->container['HttpErrorHandler'] = function ($c) {
+        if (!$this->container->offsetExists('httpErrorHandler')) {
+            $this->container['httpErrorHandler'] = function ($c) {
                 header('Content-Type: application/json');
-                $response = json_encode ([
-                    'code' => $c['exception']->getCode(), 
+
+                $response = json_encode([
+                    'code' => $c['exception']->getCode(),
                     'error' => $c['exception']->getMessage()
-                    ]
-                );
+                ]);
+
                 return $response;
             };
         }
 
-        return $this->container['HttpErrorHandler'];
+        return $this->container['httpErrorHandler'];
     }
 
     public function run()
     {
         try {
             $result = $this->getRouter()->run();
-        
-            $response = new \SON\Framework\Response;
+
+            $response = $this->getRosponder();
             $params = [
                 'container' => $this->container,
-                'params' => $result['params']
+                'params' => $result['params'],
             ];
-        
+
             foreach ($this->middlewares['before'] as $middleware) {
                 $middleware($this->container);
             }
-        
+
             $response($result['action'], $params);
-        
+
             foreach ($this->middlewares['after'] as $middleware) {
                 $middleware($this->container);
             }
-        
-        } catch(HttpException $e) {
+
+        } catch (HttpException $e) {
             $this->container['exception'] = $e;
             echo $this->getHttpErrorHandler();
         }
@@ -112,7 +115,6 @@ class APP
         $registry->setComposer($this->composer);
 
         foreach ($modules as $file => $module) {
-            //var_dump($file, $module);
             require $file;
             $registry->add(new $module);
         }

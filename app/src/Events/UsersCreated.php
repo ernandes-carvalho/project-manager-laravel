@@ -8,6 +8,6 @@ class UsersCreated
     {
         $event = $e->getName();
         $params = $e->getParams();
-        echo  sprintf('Disparado envent "%s", com parametros %s', $event, json_encode($params));
+        echo sprintf('Disparado event "%s", com parametros: %s', $event, json_encode($params));
     }
 }

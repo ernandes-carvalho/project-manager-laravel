@@ -17,7 +17,11 @@
     "autoload": {
         "psr-4": {
             "SON\\Framework\\": "src"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.5"

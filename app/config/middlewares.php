@@ -1,29 +1,27 @@
 <?php
 
-$app->addMiddleware(
-    'before',
-    function () {
-        session_start();
-    }
-);
+$app->middleware('before', function ($c) {
+    session_start();
+});
 
-$app->addMiddleware(
-    'before',
-    function () {
-        header('Content-Type: apllication/json');
+$app->middleware('before', function ($c) {
+    if (!preg_match('/^\/api\/*./', $c['router']->getCurrentUrl())) {
+        return;
     }
-);
 
-$app->addMiddleware(
-    'after',
-    function () {
-        echo 'after';
-    }
-);
+    $data = (new \App\Controllers\UsersController)->getCurrentUser($c);
 
-$app->addMiddleware(
-    'after',
-    function () {
-        echo 'after 2';
-    }
-);
+    $c['loggedUser'] = function () use ($data) {
+        return $data;
+    };
+});
+
+/*
+$app->middleware('after', function ($c) {
+    echo 'after';
+});
+
+$app->middleware('after', function ($c) {
+    echo 'after 2';
+});
+*/
